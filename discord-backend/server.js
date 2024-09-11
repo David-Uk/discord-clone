@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const http = require('http')
+const authRoutes = require('./routes/authRoutes')
 
 require('dotenv').config()
 
@@ -16,6 +17,8 @@ app.use(cors())
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log(`Database connected`))
     .catch(err => console.log(err))
+
+app.use('/api/auth', authRoutes)
 
 const server = http.createServer(app)
 
