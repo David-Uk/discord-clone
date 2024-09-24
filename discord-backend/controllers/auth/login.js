@@ -8,7 +8,7 @@ const login = async (req, res) => {
         const user = await User.findOne({ email: email.toLowerCase() });
 
         if (user && (await bcrypt.compare(password, user.password))) {
-            const token = jwt.sign(user.email, process.env.SECRET)
+            const token = jwt.sign({ userId: user._id, email }, process.env.SECRET, { expiresIn: '168h' })
             return res.status(201).json({ userId: user._id, email, token, username: user.username })
         }
         else return res.status(400).json({ error: 'Wrong login details' })
